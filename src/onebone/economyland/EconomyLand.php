@@ -626,21 +626,29 @@ class EconomyLand extends PluginBase implements Listener{
 	}
 
 	public function onPlayerInteract(PlayerInteractEvent $event){
-		if($event->getAction() === PlayerInteractEvent::RIGHT_CLICK_BLOCK){
-			$this->permissionCheck($event);
+		$nara = $event->getPlayer()->getName();
+		if(!$this->lands->exists($nara)){
+			if($event->getAction() === PlayerInteractEvent::RIGHT_CLICK_BLOCK){
+				$this->permissionCheck($event);
+			}
 		}
 	}
 
 	public function onPlaceEvent(BlockPlaceEvent $event){
 		$name = $event->getPlayer()->getName();
-		if(isset($this->placeQueue[$name])){
-			$event->setCancelled();
-			unset($this->placeQueue[$name]);
+		if(!$this->lands->exists($name)){
+			if(isset($this->placeQueue[$name])){
+				$event->setCancelled();
+				unset($this->placeQueue[$name]);
+			}
 		}
 	}
 
 	public function onBreakEvent(BlockBreakEvent $event){
-		$this->permissionCheck($event);
+		$nara = $event->getPlayer()->getName();
+		if(!$this->lands->exists($nara)){
+			$this->permissionCheck($event);
+		}
 	}
 
 	public function permissionCheck(Event $event){
