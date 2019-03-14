@@ -165,16 +165,14 @@ class EconomyLand extends PluginBase implements Listener{
 				$nara = $sender->getName();
 				if(!$sender instanceof Player){
 					$sender->sendMessage($this->getMessage("run-cmd-in-game"));
-					return true;
-				}
-				if(!$this->lands->exists($nara)){
-					$sender->sendMessage(">>土地保護は既に反映されています");
-					return true;
 				}else{
-					$this->lands->remove($nara);
-					$this->lands->save();
-					$sender->sendMessage(">>土地保護が反映されるようになりました");
-					return true;
+					if(!$this->lands->exists($nara)){
+						$sender->sendMessage(">>土地保護は既に有効です");
+				        }else{
+					        $this->lands->remove($nara);
+					        $this->lands->save();
+					        $sender->sendMessage(">>土地保護が有効になりました");
+				        }
 				}
 				break;
 				
@@ -182,20 +180,20 @@ class EconomyLand extends PluginBase implements Listener{
 				$nara = $sender->getName();
 				if(!$sender instanceof Player){
 					$sender->sendMessage($this->getMessage("run-cmd-in-game"));
-					return true;
-				}
-				if($this->lands->exists($nara)){
-					$sender->sendMessage(">>土地保護は既に無視にされています");
-					return true;
 				}else{
-					$this->lands->set($nara,count($this->lands->getAll())+1);
-					$this->lands->save();
-					$sender->sendMessage(">>土地保護が無視されるようになりました");
-					return true;
+					if($this->lands->exists($nara)){
+						$sender->sendMessage(">>土地保護は既に無効です");
+				        }else{
+					        $this->lands->set($nara,count($this->lands->getAll())+1);
+					        $this->lands->save();
+					        $sender->sendMessage(">>土地保護が無効になりました");
+					}
 				}
 				break;
+					
 				default:
 					$sender->sendMessage("Usage: /lands <on|off>");
+				break;
 			}
 			return true;
 				
